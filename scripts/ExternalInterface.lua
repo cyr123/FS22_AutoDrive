@@ -210,7 +210,8 @@ end
 
 function AutoDrive:combineIsCallingDriver(combine)	--only for CoursePlay
 	local openPipe,_ = ADHarvestManager.getOpenPipePercent(combine)
-	return openPipe or ADHarvestManager.doesHarvesterNeedUnloading(combine, true)
+	--return openPipe or ADHarvestManager.doesHarvesterNeedUnloading(combine, true)
+	return false
 end
 
 function AutoDrive:getCombineOpenPipePercent(combine)	--for AIVE
