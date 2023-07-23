@@ -228,7 +228,7 @@ function ADSpecialDrivingModule:handleReverseDriving(dt)
             AutoDrive.debugPrint(self.vehicle, AutoDrive.DC_PATHINFO, "ADSpecialDrivingModule:handleReverseDriving unloadingIntoBunkerSilo self.currentWayPointIndex %s ", tostring(self.currentWayPointIndex))
             self.vehicle.ad.drivePathModule:reachedTarget()
         else
-            if self.wayPoints == nil or self.wayPoints[self.currentWayPointIndex] == nil then
+            if self.atTarget or self.wayPoints == nil or self.wayPoints[self.currentWayPointIndex] == nil then
                 return
             end
 
