@@ -290,9 +290,14 @@ function ADSensor:getBoxShape()
     if self.position == ADSensor.POS_FRONT_LEFT or self.position == ADSensor.POS_FRONT_RIGHT then
         boxYPos = 2.25
     end
+    
+--    if self.position == ADSensor.POS_FRONT or self.position == ADSensor.POS_REAR -- and self.dynamicLength == true then
     if self.position == ADSensor.POS_FRONT and self.dynamicLength == true then
         boxYPos = AutoDrive.getSetting("collisionHeigth", self.vehicle) or 2
     end
+    
+    local x, y, z = getWorldTranslation(self.vehicle.components[1].node)
+    --local x, y, z = localToWorld(vehicle.components[1].node, self.location.x, boxYPos, self.location.z)
 
     local box = {}
     box.offset = {}
@@ -302,12 +307,30 @@ function ADSensor:getBoxShape()
     box.size[2] = 0.75 -- fixed height for now
     box.size[3] = lookAheadDistance * 0.5
     box.offset[1] = self.location.x
-    box.offset[2] = boxYPos -- fixed y pos for now
+    box.offset[2] = boxYPos + box.size[2] + AutoDrive:getTerrainHeightAtWorldPos(x, z, y) - y
     box.offset[3] = self.location.z
     box.center[1] = box.offset[1] + vecZ.x * box.size[3] -- + vecX.x * box.size[1]
-    box.center[2] = boxYPos -- fixed y pos for now
+    box.center[2] = box.offset[2]
     box.center[3] = box.offset[3] + vecZ.z * box.size[3] -- + vecX.z * box.size[1]
 
+    if self.sideFactor == -1 then
+        vecX = {x = -vecX.x, z = -vecX.z}
+    end
+
+    box.dirX, box.dirY, box.dirZ = localDirectionToWorld(vehicle.components[1].node, 0, 0, 1)
+    box.zx, box.zy, box.zz = localDirectionToWorld(vehicle.components[1].node, vecZ.x, 0, vecZ.z)
+    box.ry = math.atan2(box.zx, box.zz)
+    box.rx = -MathUtil.getYRotationFromDirection(box.dirY, 1) * self.frontFactor
+
+    if self.vehicle.ad.stateModule ~= nil and self.vehicle.ad.stateModule:isActive() then
+        local elevationAngle = self.vehicle.ad.drivePathModule:getApproachingElevationAngle(math.min(lookAheadDistance * 2, 20))
+        if elevationAngle ~= nil then
+            relativeAngle = box.rx + elevationAngle
+            box.rx = -elevationAngle
+            box.center[2] = box.center[2] + math.sin(relativeAngle) * box.center[3]
+        end
+    end
+    
     box.topLeft = {}
     box.topLeft[1] = box.center[1] - vecX.x * box.size[1] + vecZ.x * box.size[3]
     box.topLeft[2] = boxYPos
@@ -328,22 +351,6 @@ function ADSensor:getBoxShape()
     box.downLeft[2] = boxYPos
     box.downLeft[3] = box.center[3] - vecX.z * box.size[1] - vecZ.z * box.size[3]
 
-    if self.sideFactor == -1 then
-        vecX = {x = -vecX.x, z = -vecX.z}
-    end
-
-    box.dirX, box.dirY, box.dirZ = localDirectionToWorld(vehicle.components[1].node, 0, 0, 1)
-    box.zx, box.zy, box.zz = localDirectionToWorld(vehicle.components[1].node, vecZ.x, 0, vecZ.z)
-    box.ry = math.atan2(box.zx, box.zz)
-    local angleOffset = 4
-    local x, y, z = getWorldTranslation(self.vehicle.components[1].node)
-    if not AutoDrive.checkIsOnField(x, y, z) and self.vehicle.ad.stateModule ~= nil and self.vehicle.ad.stateModule:isActive() then
-        local heightDiff = self.vehicle.ad.drivePathModule:getApproachingHeightDiff()
-        if heightDiff < 1.5 and heightDiff > -1 then
-            angleOffset = 0
-        end
-    end
-    box.rx = -MathUtil.getYRotationFromDirection(box.dirY, 1) * self.frontFactor - math.rad(angleOffset)
     box.x, box.y, box.z = localToWorld(vehicle.components[1].node, box.center[1], box.center[2], box.center[3])
 
     box.topLeft.x, box.topLeft.y, box.topLeft.z = localToWorld(vehicle.components[1].node, box.topLeft[1], box.topLeft[2], box.topLeft[3])

@@ -355,6 +355,10 @@ function ADDrivePathModule:getWayPoints()
     return self.wayPoints, self:getCurrentWayPointIndex()
 end
 
+function ADDrivePathModule:getUsedWayPoint()
+    return self.lastUsedWayPoint or self:getCurrentWayPoint()
+end
+
 function ADDrivePathModule:getLastWayPoint()
     if self.wayPoints ~= nil then
         return self.wayPoints[#self.wayPoints]
@@ -494,6 +498,28 @@ function ADDrivePathModule:getApproachingHeightDiff()
         end
     end
     return heightDiff
+end
+
+function ADDrivePathModule:getApproachingElevationAngle(lookAheadDistance)
+    local x, y, z = getWorldTranslation(self.vehicle.components[1].node)
+    y = AutoDrive:getTerrainHeightAtWorldPos(x, z, y)
+    local highestAngle = nil
+    local maxLookAhead = 10
+    for i = 0, maxLookAhead do
+        if self.wayPoints ~= nil and self:getCurrentWayPointIndex() ~= nil and self:getCurrentWayPoint() ~= nil and (self:getCurrentWayPointIndex() + i) <= #self.wayPoints then
+            local p1 = self.wayPoints[self:getCurrentWayPointIndex() + i]
+            local heightDiff = AutoDrive:getTerrainHeightAtWorldPos(p1.x, p1.z, p1.y) - y
+            local distance = MathUtil.vector2Length(p1.x - x, p1.z - z)
+            if distance > 1  then
+                local angle = math.atan(heightDiff / distance)
+                highestAngle = math.max(angle, highestAngle or angle)
+                if distance > lookAheadDistance then
+                    break
+                end
+            end
+        end
+    end
+    return highestAngle
 end
 
 function ADDrivePathModule:getMaxSpeedForAngle(angle)
