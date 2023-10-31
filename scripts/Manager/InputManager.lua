@@ -269,7 +269,7 @@ function ADInputManager:input_start_stop(vehicle, farmId)
             vehicle.ad.stateModule:setActualFarmId(farmId) -- input_start_stop
         end
 
-        vehicle.ad.stateModule:getCurrentMode():start()
+        vehicle.ad.stateModule:getCurrentMode():start(AutoDrive.USER_PLAYER)
 
         if AutoDrive.rightSHIFTmodifierKeyPressed then
             for _, otherVehicle in pairs(g_currentMission.vehicles) do
@@ -278,7 +278,7 @@ function ADInputManager:input_start_stop(vehicle, farmId)
                     
                     if otherVehicle.ad.stateModule.activeBeforeSave then
                         -- g_currentMission:requestToEnterVehicle(otherVehicle)
-                        otherVehicle.ad.stateModule:getCurrentMode():start()
+                        otherVehicle.ad.stateModule:getCurrentMode():start(AutoDrive.USER_PLAYER)
                     end
                     if otherVehicle.ad.stateModule.AIVEActiveBeforeSave and otherVehicle.acParameters ~= nil then
                         -- g_currentMission:requestToEnterVehicle(otherVehicle)
@@ -296,11 +296,11 @@ function ADInputManager:input_start_stop(vehicle, farmId)
 end
 
 function ADInputManager:input_incLoopCounter(vehicle)
-    vehicle.ad.stateModule:increaseLoopCounter()
+    vehicle.ad.stateModule:changeLoopCounter(true)
 end
 
 function ADInputManager:input_decLoopCounter(vehicle)
-    vehicle.ad.stateModule:decreaseLoopCounter()
+    vehicle.ad.stateModule:changeLoopCounter(false)
 end
 
 function ADInputManager:input_setParkDestination(vehicle)

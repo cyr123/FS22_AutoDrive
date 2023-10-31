@@ -166,6 +166,7 @@
         <text name="gui_ad_distributeToFolder_tooltip"      	text="Tutte le destinazioni nella stessa cartella verranno ruotate come destinazioni di scarico." />
         <text name="gui_ad_maxTriggerDistance"          	text="Distanza massima dal trigger" />
         <text name="gui_ad_maxTriggerDistance_tooltip"      	text="Distanza dall'obiettivo in cui i trigger vengono rilevati e attivati." />
+        <text name="gui_ad_useGlobalSetting"			    text="Use global setting" />
         <text name="gui_ad_useBeaconLights"             	text="Accendi Fari" />
         <text name="gui_ad_useBeaconLights_tooltip"         	text="Usa i fari sulla strada." />
 		<text name="gui_ad_worklightsWhenLoading"				text="Faro da lavoro durante carico/scarico" />
@@ -304,6 +305,7 @@
         <text name="ad_color_editorHeightLine"      	text="14 Linea dal nodo di superficie a quello sopra il veicolo" />
 		<text name="ad_color_previewOk" 			            text="15 Anteprima svolte Ok, nessuna collisione" />
 		<text name="ad_color_previewNotOk" 			            text="16 Anteprima svolte non ok, ce collisione" />
+		<text name="ad_color_textInputBackground" 			    text="17 Background for inputs of text, targets etc." />
  
         <text name="button_delete_all"      text="Cancella Tutto" />
         <text name="button_reset_selected"  text="Ripristina selezionato" />

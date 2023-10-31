@@ -164,6 +164,7 @@
         <text name="gui_ad_rotateTargets_tooltip"                                                           text="4 Mod: Hedeflerde değişiklik yok / yalnızca Toplama Hedefleri / yalnızca Hedefleri Teslim Et / Klasördeki Alım ve Teslim Hedefleri döngü halinde (varsayılan klasörle değil) (yalnızca klasörleri kullan etkinse dikkate alınır)"  />
         <text name="gui_ad_maxTriggerDistance"                                                              text="Maksimum tetik mesafesi"  />
         <text name="gui_ad_maxTriggerDistance_tooltip"                                                      text="Tetikleyicilerin algılandığı ve etkinleştirildiği hedefe olan mesafe."  />
+        <text name="gui_ad_useGlobalSetting"					                                            text="Use global setting" />
         <text name="gui_ad_useBeaconLights"                                                                 text="Uyarı ışıkları"  />
         <text name="gui_ad_useBeaconLights_tooltip"                                                         text="Evet - Alanların dışında otomatik olarak uyarı ışıkları kullan / Hayır - uyarı ışıkları otomatik olarak açılmayacak veya kapanmayacak"  />
 		<text name="gui_ad_worklightsWhenLoading"				text="Worklight when Loading / Unloading" />
@@ -301,6 +302,7 @@
 		<text name="ad_color_editorHeightLine" 			        text="14 line from surface waypoint to the one above vehicle" />
 		<text name="ad_color_previewOk" 			            text="15 curve preview OK, no collision" />
 		<text name="ad_color_previewNotOk" 			            text="16 curve preview NotOK, has collision" />
+		<text name="ad_color_textInputBackground" 			    text="17 Background for inputs of text, targets etc." />
 
         <text name="button_delete_all"                                                                      text="Hepsini sil"  />
 		<text name="button_reset_selected" 					    text="Reset selected" />                                                                                          
